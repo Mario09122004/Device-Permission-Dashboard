@@ -6,7 +6,7 @@ A clean, standalone web application demonstrating browser device permissions (Ca
 
 ---
 
-## 📁 Project Structure (No Next.js)
+## 📁 Project Structure
 
 ```text
 device-permission-dashboard/
