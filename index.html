@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Device Permission Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Trust & Educational Banner -->
+    <header class="dashboard-header">
+      <div class="banner-trust" id="trust-banner">
+        <div class="trust-badge">
+          <span class="shield-icon" aria-hidden="true">🛡️</span>
+          <span class="trust-text">Local educational experiment — no data is uploaded or recorded.</span>
+        </div>
+        <div class="origin-tag">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>Origin: <code>http://127.0.0.1:8000</code> (Trustworthy Localhost)</span>
+        </div>
+      </div>
+
+      <div class="header-main">
+        <div class="title-group">
+          <div class="logo-icon" aria-hidden="true">⚙️</div>
+          <div>
+            <h1 id="main-title">Device Permission Dashboard</h1>
+            <p class="subtitle">Inspect, trigger, and understand client-side browser permission workflows in real time.</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button id="btn-view-privacy" class="btn btn-secondary">
+            <span class="btn-icon" aria-hidden="true">🔒</span>
+            <span>View privacy guidance</span>
+          </button>
+          <button id="btn-reset-instructions" class="btn btn-secondary">
+            <span class="btn-icon" aria-hidden="true">🔄</span>
+            <span>Reset browser permission instructions</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Dashboard Grid -->
+    <main class="dashboard-grid">
+      <!-- Camera Permission Card -->
+      <section class="card permission-card" id="camera-card" aria-labelledby="camera-card-title">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="feature-icon camera" aria-hidden="true">📷</span>
+            <div>
+              <h2 id="camera-card-title">Camera Permission</h2>
+              <p class="card-caption">Test browser video stream authorization</p>
+            </div>
+          </div>
+          <div class="status-pill status-idle" id="camera-status-pill">
+            <span class="status-indicator"></span>
+            <span id="camera-status-text">Not Requested</span>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="policy-notice">
+            <span class="notice-icon" aria-hidden="true">⚡</span>
+            <span>Tracks are closed immediately upon approval. No image or video is captured, stored, or streamed.</span>
+          </div>
+
+          <div class="action-row">
+            <button id="btn-check-camera" class="btn btn-primary">
+              <span class="btn-icon" aria-hidden="true">🎥</span>
+              <span>Check camera permission</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Result Box -->
+          <div class="result-box" id="camera-result-box" aria-live="polite">
+            <div class="result-header">
+              <span class="result-label">Status Result</span>
+              <span class="timestamp" id="camera-timestamp">—</span>
+            </div>
+            <div class="result-message" id="camera-result-message">
+              Click the button above to test the browser camera permission prompt.
+            </div>
+            <div class="result-details" id="camera-result-details" hidden>
+              <!-- Technical / safety metadata injected by app.js -->
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <span class="api-tag">API: <code>navigator.mediaDevices.getUserMedia</code></span>
+          <span class="privacy-guarantee">Zero Retention</span>
+        </div>
+      </section>
+
+      <!-- Location Permission Card -->
+      <section class="card permission-card" id="location-card" aria-labelledby="location-card-title">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <span class="feature-icon location" aria-hidden="true">📍</span>
+            <div>
+              <h2 id="location-card-title">Location Permission</h2>
+              <p class="card-caption">Test geolocation prompt and resolution</p>
+            </div>
+          </div>
+          <div class="status-pill status-idle" id="location-status-pill">
+            <span class="status-indicator"></span>
+            <span id="location-status-text">Not Requested</span>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="policy-notice">
+            <span class="notice-icon" aria-hidden="true">🛡️</span>
+            <span>Zero coordinate policy: Coordinates are strictly never read, logged, saved, or transmitted.</span>
+          </div>
+
+          <div class="action-row">
+            <button id="btn-request-location" class="btn btn-primary">
+              <span class="btn-icon" aria-hidden="true">🧭</span>
+              <span>Request location permission</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Result Box -->
+          <div class="result-box" id="location-result-box" aria-live="polite">
+            <div class="result-header">
+              <span class="result-label">Status Result</span>
+              <span class="timestamp" id="location-timestamp">—</span>
+            </div>
+            <div class="location-badge-container">
+              <span class="location-outcome-badge" id="location-outcome-badge">Awaiting Check</span>
+            </div>
+            <div class="result-message" id="location-result-message">
+              Click the button above to trigger the native location prompt.
+            </div>
+            <div class="result-details" id="location-result-details" hidden>
+              <!-- Technical / safety metadata injected by app.js -->
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <span class="api-tag">API: <code>navigator.geolocation.getCurrentPosition</code></span>
+          <span class="privacy-guarantee">Strictly Blind Result</span>
+        </div>
+      </section>
+    </main>
+
+    <!-- Hardware & Provider Diagnostic Simulation Sandbox -->
+    <section class="card diagnostic-card" id="diagnostic-sandbox" aria-labelledby="diag-title">
+      <div class="card-header">
+        <div class="card-title-wrap">
+          <span class="feature-icon simulation" aria-hidden="true">🧪</span>
+          <div>
+            <h2 id="diag-title">Hardware & Provider Diagnostic Sandbox</h2>
+            <p class="card-caption">Test unavailable and error states without physical hardware changes</p>
+          </div>
+        </div>
+        <div class="badge-diag">Testing Mode</div>
+      </div>
+
+      <div class="card-body">
+        <p class="diag-description">
+          Modern laptops or workstations may have attached webcams or Wi-Fi triangulation providers. 
+          Use these diagnostic triggers to test and inspect the exact <strong>“Unavailable”</strong> and <strong>“Error”</strong> states compliant with W3C Media Capture and Geolocation specifications:
+        </p>
+
+        <div class="diag-buttons-grid">
+          <button id="btn-sim-no-camera" class="btn btn-diag">
+            <span class="btn-icon" aria-hidden="true">🚫📷</span>
+            <span>Simulate No Camera Hardware (NotFoundError)</span>
+          </button>
+          <button id="btn-sim-no-location" class="btn btn-diag">
+            <span class="btn-icon" aria-hidden="true">🚫📍</span>
+            <span>Simulate Location Provider Unavailable (POSITION_UNAVAILABLE)</span>
+          </button>
+          <button id="btn-sim-timeout" class="btn btn-diag">
+            <span class="btn-icon" aria-hidden="true">⏱️📍</span>
+            <span>Simulate Location Timeout (Unavailable)</span>
+          </button>
+          <button id="btn-sim-unsupported" class="btn btn-diag">
+            <span class="btn-icon" aria-hidden="true">⚠️💻</span>
+            <span>Simulate Unsupported Browser APIs</span>
+          </button>
+          <button id="btn-sim-reset" class="btn btn-ghost btn-diag-reset">
+            <span class="btn-icon" aria-hidden="true">🔄</span>
+            <span>Reset Cards to Initial State</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- In-Page Explanation: Revoking Access via Site Settings -->
+    <section class="card revoke-guide-card" id="site-settings-guide" aria-labelledby="revoke-card-title">
+      <div class="card-header">
+        <div class="card-title-wrap">
+          <span class="feature-icon settings" aria-hidden="true">🛠️</span>
+          <div>
+            <h2 id="revoke-card-title">How to Revoke or Reset Access in Browser Site Settings</h2>
+            <p class="card-caption">You have full control over your device permissions at all times.</p>
+          </div>
+        </div>
+      </div>
+      <div class="guide-grid">
+        <div class="guide-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h3>Locate Address Bar Controls</h3>
+            <p>Look to the left of the URL bar (next to <code>http://127.0.0.1:8000</code>). Click the <strong>View site information</strong> icon (tune icon 🎛️ or padlock 🔒).</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h3>Adjust Direct Toggles</h3>
+            <p>A popup menu will display active permissions for this origin. Toggle <strong>Camera</strong> or <strong>Location</strong> back to <em>Ask (default)</em>, <em>Block</em>, or click <strong>Reset permissions</strong>.</p>
+          </div>
+        </div>
+        <div class="guide-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h3>Or Open Full Site Settings</h3>
+            <p>Click <strong>Site settings</strong> inside that menu to manage persistent rules, cookies, sound, and sensors specifically for <code>127.0.0.1</code>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Activity Log / Educational Audit Trail -->
+    <section class="card audit-card" id="audit-section" aria-labelledby="audit-title">
+      <div class="audit-header">
+        <div class="audit-title-wrap">
+          <span class="terminal-icon" aria-hidden="true">💻</span>
+          <h2 id="audit-title">Educational Experiment Audit Log</h2>
+        </div>
+        <button id="btn-clear-log" class="btn btn-sm btn-ghost">Clear Log</button>
+      </div>
+      <div class="terminal-window" id="audit-log" role="log" aria-live="polite">
+        <div class="log-entry log-system">
+          <span class="log-time">[System Init]</span>
+          <span class="log-msg">Dashboard mounted. Zero telemetry active. Origin verified as localhost:8000.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <p>Device Permission Dashboard — Educational Demonstration</p>
+      <p class="footer-note">“Local educational experiment — no data is uploaded or recorded.”</p>
+    </footer>
+  </div>
+
+  <!-- Modal 1: Privacy Guidance -->
+  <div class="modal-backdrop" id="modal-privacy" hidden role="dialog" aria-modal="true" aria-labelledby="modal-privacy-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon" aria-hidden="true">🛡️</span>
+          <h2 id="modal-privacy-title">Privacy Guidance & Architecture</h2>
+        </div>
+        <button class="modal-close" id="btn-close-privacy" aria-label="Close privacy guidance">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-highlight">
+          <strong>Key Guarantee:</strong> “Local educational experiment — no data is uploaded or recorded.”
+        </div>
+
+        <section class="guidance-section">
+          <h3>1. How Browser Permissions Work</h3>
+          <p>Modern browsers employ a strict sandbox security architecture. Web pages cannot access cameras, microphones, or geolocation sensors without explicit user interaction and affirmative consent.</p>
+        </section>
+
+        <section class="guidance-section">
+          <h3>2. Immediate Camera Stream Termination</h3>
+          <p>When you click <strong>Check camera permission</strong>, a temporary stream is requested solely to verify device capability. The instant the promise resolves, our code calls <code>stream.getTracks().forEach(track => track.stop())</code>. No canvas is drawn, no snapshot taken, and no video feed is rendered or kept in memory.</p>
+        </section>
+
+        <section class="guidance-section">
+          <h3>3. Zero-Coordinate Location Privacy</h3>
+          <p>When you click <strong>Request location permission</strong>, the application strictly captures whether the browser returned success or failure. The numerical latitude, longitude, altitude, and precision properties are never read or stored.</p>
+        </section>
+
+        <section class="guidance-section">
+          <h3>4. Refusal is First-Class</h3>
+          <p>Denying requests is completely normal and supported. The application handles <code>NotAllowedError</code> and <code>PERMISSION_DENIED</code> gracefully without degraded dashboard functionality.</p>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btn-ack-privacy">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Reset Browser Permission Instructions -->
+  <div class="modal-backdrop" id="modal-reset" hidden role="dialog" aria-modal="true" aria-labelledby="modal-reset-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon" aria-hidden="true">🔄</span>
+          <h2 id="modal-reset-title">Reset Browser Permission Instructions</h2>
+        </div>
+        <button class="modal-close" id="btn-close-reset" aria-label="Close reset instructions">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-intro">Follow the instructions for your specific browser below to revoke, reset, or change camera and location permissions for this site:</p>
+
+        <div class="browser-tabs" role="tablist">
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="tab-chrome">Chrome & Chromium</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-firefox">Firefox</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-edge">Edge</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="tab-safari">Safari</button>
+        </div>
+
+        <div class="tab-panels">
+          <!-- Chrome -->
+          <div class="tab-panel active" id="tab-chrome" role="tabpanel">
+            <ol class="step-list">
+              <li>Click the <strong>Tune / Settings icon</strong> (🎛️) just left of <code>http://127.0.0.1:8000</code> in the address bar.</li>
+              <li>Locate <strong>Camera</strong> and <strong>Location</strong> in the permission list.</li>
+              <li>Change the toggle or dropdown back to <em>Ask (default)</em> or click <strong>Reset permissions</strong>.</li>
+              <li>Reload the page to see the clean, unprompted initial state.</li>
+              <li><em>Alternative:</em> Navigate to <code>chrome://settings/content/siteDetails?site=http%3A%2F%2F127.0.0.1%3A8000</code>.</li>
+            </ol>
+          </div>
+
+          <!-- Firefox -->
+          <div class="tab-panel" id="tab-firefox" role="tabpanel" hidden>
+            <ol class="step-list">
+              <li>Click the <strong>Permissions icon</strong> or <strong>Padlock</strong> in the address bar to the left of the URL.</li>
+              <li>In the panel that opens, look for <strong>Permissions</strong> (Camera, Location).</li>
+              <li>Click the <strong>✕ (cross)</strong> icon next to "Allowed" or "Blocked" to clear the saved decision.</li>
+              <li>Reload the dashboard. Firefox will prompt again next time you test.</li>
+            </ol>
+          </div>
+
+          <!-- Edge -->
+          <div class="tab-panel" id="tab-edge" role="tabpanel" hidden>
+            <ol class="step-list">
+              <li>Click the <strong>Lock / Site Info</strong> icon (🔒) on the left of the URL bar.</li>
+              <li>Click <strong>Permissions for this site</strong>.</li>
+              <li>Set <strong>Location</strong> and <strong>Camera</strong> to <em>Ask (default)</em> or select <strong>Reset permissions</strong>.</li>
+              <li>Return to the dashboard tab and refresh.</li>
+            </ol>
+          </div>
+
+          <!-- Safari -->
+          <div class="tab-panel" id="tab-safari" role="tabpanel" hidden>
+            <ol class="step-list">
+              <li>Open <strong>Safari</strong> &gt; <strong>Settings... (or Preferences)</strong> from the menu bar.</li>
+              <li>Select the <strong>Websites</strong> tab at the top.</li>
+              <li>Choose <strong>Camera</strong> or <strong>Location</strong> in the left sidebar.</li>
+              <li>Locate <code>127.0.0.1</code> in the configured websites list and change the selector to <em>Ask</em> or remove it.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btn-ack-reset">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
